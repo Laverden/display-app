@@ -1,3 +1,41 @@
+# Create Self Signed Certificate for Development
+
+## PowerShell
+1. Launch PowerShell in Admin Mode.
+2. Generate a self-signed ceriticate:
+    ```PowerShell
+    > New-SelfSignedCertificate -Type Custom -Subject "CN=<MyCommonName> O=<MyOrganization> C=<MyCountry>" -KeyUsage DigitalSignature -FriendlyName "<MyCommonName>" -CertStoreLocation "Cert:\LocalMachine\My" -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")
+    ```
+    Replace any variable that looks like `<MyVar>`. For example:
+    - `<MyCommonName>`: Devel
+    - `<MyOrganization>`: Devel
+    - `<MyCounter>`: US
+    - `<MyCommonName>`: Devel
+3. Once the command finishes, a thumbprint should be displayed. Save this for later.
+4. In case you missplace the thumbprint, run the following command to list it:
+    ```PowerShell
+    > Set-Location Cert:\LocalMachine\My
+    > ls
+    ```
+5. Export the self-signed certificate:
+    
+    a. Create a certificate password:
+    ```PowerShell
+    > $password = ConvertTo-SecureString -String <MyPassword> -Force -AsPlainText
+    ```
+    b. Export certificate as PFX:
+    ```PowerShell
+    > Export-PfxCertificate -cert "Cert:\LocalMachine\My\<CertThumbprint>" -FilePath <MyOutputPath>.pfx -Password $password
+    ```
+    Replace any variable that looks like `<MyVar>`. For example:
+    - `<MyPassword>`: 123456
+    - `<MyOutputPath`: $HOME\devel-certificate (this will put the certificate in the user folder)
+
+6. Navigate to <MyOutputPath> and find the .pfx file that is needed for signing an Electron App with the self-signed certificate.
+
+7. Now you can set the environamental variables CSC_LINK and CSC_KEY_PASSWORD with the corresponding .pfx path and password.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

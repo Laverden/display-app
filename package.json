@@ -1,21 +1,42 @@
 {
   "name": "display-app",
   "version": "0.1.0",
-  "private": true,
+  "description": "Desktop App with Electron and React Exercise: Display App",
+  "author": {"name": "Laverden"},
+  "main": "public/electron.js",
+  "build": {
+    "appId": "com.exercise.displayapp",
+    "win": {
+      "verifyUpdateCodeSignature": false,
+      "signAndEditExecutable": false,
+      "certificateFile": "./../laverden-self-certificate.pfx",
+      "certificatePassword": "laverden"
+    }
+  },
+  "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "cross-env": "^7.0.3",
+    "electron-is-dev": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test",
+    "react-eject": "react-scripts eject",
+    "setup-sign-cert": "SET CSC_LINK=../laverden-self-certificate.pfx",
+    "setup-sign-password": "SET CSC_KEY_PASSWORD=laverden",
+    "setup-sign-no-auto": "SET CSC_IDENTITY_AUTO_DISCOVERY=false",
+    "setup-signing": "npm run setup-sign-cert && npm run setup-sign-password && npm run setup-sign-no-auto",
+    "electron-build": "electron-builder",
+    "build": "npm run react-build && npm run electron-build",
+    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +55,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "electron": "^13.1.6",
+    "electron-builder": "^22.11.7",
+    "wait-on": "^6.0.0"
   }
 }
