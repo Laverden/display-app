@@ -1,4 +1,7 @@
-const { app, BrowserWindow } = require('electron')
+const electron = require("electron");
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+
 const path = require("path")
 const isDev = require("electron-is-dev")
 
@@ -6,25 +9,28 @@ const prodIndexPath = path.join(__dirname, "../build/index.html")
 const localURL = "http://localhost:3000"
 const prodURL =  `file://${prodIndexPath}`
 
+let mainWindow;
 
 function createWindow () {
-    const win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 800,
         height: 600
     })
 
-    win.loadURL( isDev ? localURL : prodURL )
+    mainWindow.loadURL( isDev ? localURL : prodURL );
+
+    mainWindow.on("closed", () => (mainWindow = null));
 }
   
-app.whenReady().then(() => {
-    createWindow()
+app.on("ready", createWindow);
 
-    app.on('activate', function () {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    })
-})
+app.on("activate", () => {
+    if (mainWindow === null) {
+        createWindow();
+    }
+});
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit()
-})
+});
   
