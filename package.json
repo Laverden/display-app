@@ -1,12 +1,12 @@
 {
-  "name": "display-app",
+  "name": "electron-react-app",
   "version": "0.2.0",
-  "description": "Desktop App with Electron and React Exercise: Display App",
+  "description": "Desktop App with Electron and React Exercise",
   "author": {
     "name": "Laverden"
   },
   "build": {
-    "appId": "com.exercise.displayapp",
+    "appId": "com.exercise.electronreactapp",
     "win": {
       "verifyUpdateCodeSignature": false,
       "signAndEditExecutable": false,
