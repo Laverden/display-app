@@ -33,10 +33,8 @@ describe("TodoFooter", () => {
     const paragraphElement = screen.getByText(/1 task left/i);
     expect(paragraphElement).toBeInTheDocument();
   });
-  
+
 })
-
-
 
 // it('should render TodoFooter and be visible to the user', () => {
 //   render(
